@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="application">
+<head>
+    <title></title>
+</head>
+<body>
+
+<div ng-controller="controller1">
+    scope1 - {{ theString }}
+    <hr>
+</div>
+
+<div ng-controller="controller2">
+    scope2 - {{ theString }}: {{ name }}
+    <hr>
+</div>
+
+
+<script src="../scripts/angular/angular.js"></script>
+
+<script>
+
+    var app = angular.module('application', []);
+
+    app.controller('controller1', function($scope, $rootScope){
+        $scope.theString = "Hello world string 1";
+
+        /**
+         * Set some value on the root scope so it can be accessed elsewhere
+         * @type {string}
+         */
+        $rootScope.name = "Chris Robinson";
+    });
+
+    app.controller('controller2', function($scope, $rootScope){
+        $scope.theString = "Hello world string 2";
+
+        /**
+         * Pull the data out of the root scope and assign it to the local scope
+         * @type {string}
+         */
+        $scope.name = $rootScope.name;
+    });
+
+
+</script>
+
+</body>
+</html>

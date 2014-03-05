@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="application">
+<head>
+    <title></title>
+</head>
+<body>
+
+<div ng-controller="controller1">
+    CONTROLLER 1: <input type="text" data-ng-model="theMessage"/>
+    <button data-ng-click="broadcastMessage(theMessage)">BROADCAST</button>
+    {{ car.date }}
+    <button data-ng-click="loadCar()">LOAD CAR</button>
+</div>
+
+<div ng-controller="controller2">
+    CONTROLLER 2: <input type="text" data-ng-model="theMessage"/>
+</div>
+
+<div ng-controller="controller3">
+    CONTROLLER 3: <input type="text" data-ng-model="theMessage"/>
+</div>
+
+<script src="../scripts/angular/angular.js"></script>
+
+<script>
+
+    var app = angular.module('application', []);
+
+    app.controller('controller1', function($scope, dataService){
+
+        /**
+         * calls into the data service's 'broadcastMessage' function
+         * and passes theMessage as an arg
+         * @param theMessage the message to broadcast
+         */
+        $scope.broadcastMessage = function(theMessage){
+            dataService.broadcastMessage(theMessage);
+        };
+
+        $scope.loadCar = function(){
+            $scope.car = dataService.loadCar();
+        };
+
+    });
+
+    app.controller('controller2', function($scope, dataService){
+
+        /**
+         * Listens for the 'broadcastTheMessage' event and
+         * when that is triggered, it loads the message value from
+         * the data service and applies it to the local scope.
+         */
+        $scope.$on('broadcastTheMessage', function(){
+           $scope.theMessage = dataService.message;
+        });
+    });
+
+    app.controller('controller3', function($scope, dataService){
+
+        /**
+         * Listens for the 'broadcastTheMessage' event and
+         * when that is triggered, it loads the message value from
+         * the data service and applies it to the local scope.
+         */
+        $scope.$on('broadcastTheMessage', function(){
+           $scope.theMessage = dataService.message;
+        });
+    });
+
+    app.service('dataService', function($rootScope){
+        this.message;
+        this.myCar;
+
+        /**
+         * Sets the 'message' value to the value of the passed in arg of 'theMessage'
+         * @param theMessage the value to set the message to
+         */
+        this.broadcastMessage = function(theMessage){
+            this.message = theMessage;
+
+            /**
+             * Broadcast the event of 'broadcastTheMessage'
+             */
+            $rootScope.$broadcast('broadcastTheMessage');
+        };
+
+        /**
+         * Cacheing example, only loads a new car if it hasn't been previously loaded
+         * @returns {{maker: string, model: string, year: number, miles: number, date: Date}|*}
+         */
+        this.loadCar = function(){
+            if(!this.myCar){
+                var car = {
+                    maker: "Acura",
+                    model: "MDX",
+                    year: 2005,
+                    miles: 76000,
+                    date: new Date()
+                }
+                this.myCar = car;
+            }
+            return this.myCar;
+        };
+
+    });
+
+</script>
+
+</body>
+</html>

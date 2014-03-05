@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+    <div ng-app="application" ng-controller="mainController">
+        {{ promiseNumber }}
+        <hr>
+        {{ step }}
+        <hr>
+        {{ callbackNumber }}
+    </div>
+
+    <script src="../scripts/angular/angular.js"></script>
+    <script>
+
+        var app = angular.module('application', []);
+        app.controller('mainController', function($scope, $http, $q){
+
+            /**
+             * Function that returns a promise.  It will resolve after 5 seconds, and adds 1 to the number passed in
+             * @param num
+             * @returns {promise|*}
+             */
+            $scope.addNumWithPromise = function(num){
+                var deferred = $q.defer();
+                $scope.step = $scope.step + 1;
+                if(angular.isNumber(num)){
+                    setTimeout(function(){
+                        deferred.resolve({
+                            "number": num + 1
+                        });
+                    }, 5000);
+                }
+                else{
+                    deferred.reject("NaN");
+                }
+                return deferred.promise;
+            };
+
+            /**
+             * Functions that takes a callback that will add a 1 to the number passed in, and pass that value back into the callback function and execute it
+             * @param num
+             * @param callback
+             */
+            $scope.addNumWithCallback = function(num, callback){
+                var newVal;
+                setTimeout(function(){
+                    newVal = num + 1;
+                    callback(newVal);
+                }, 5000);
+            }
+
+            $scope.step = 0;
+            $scope.promiseNumber = 0;
+            $scope.callbackNumber = 0;
+
+            /**
+             * Example of chaining multiple promises together.
+             * Each .then() call must return another promise
+             */
+            //            $scope.addNum($scope.promiseNumber)
+            //                    .then(function(num){ return $scope.addNum(num); })
+            //                    .then(function(num){ return $scope.addNum(num); })
+            //                    .then(function(num){ return $scope.addNum(num); })
+            //                    .then(function(num){ return $scope.addNum(num); })
+            //                    .then(function(num){ $scope.promiseNumber = num }, function(err){ $scope.promiseNumber = err});
+
+
+            /**
+             * Both of these functions do the same thing.  They just do it differently
+             * The top one is using the Promise api, and the bottom is doing the same thing using a callback
+             */
+            $scope.addNumWithPromise($scope.promiseNumber).then(function(theObject){ $scope.promiseNumber = theObject.number }, function(err){ $scope.promiseNumber = err });
+            $scope.addNumWithCallback($scope.callbackNumber, function(newVal){ $scope.callbackNumber = newVal });
+        });
+    </script>
+
+</body>
+</html>

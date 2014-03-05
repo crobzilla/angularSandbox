@@ -1,0 +1,19 @@
+<div>
+
+    <!-- Table with alternating cell background color and outer frame -->
+    <table class="table table-striped container">
+        <thead>
+        <tr>
+            <th>Day Part</th>
+            <th>Forecast</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="forecastDay in forecast.forecast.txt_forecast.forecastday">
+            <td>{{ forecastDay.title }}</td>
+            <td><img src="{{ forecastDay.icon_url }}">{{ forecastDay.fcttext }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

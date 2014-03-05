@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Include the bootstrap stylesheets -->
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+</head>
+<body ng-app="productsApp">
+
+    <div>Header -- <a href="#/weather">View Weather</a></div>
+    <div data-ng-view></div>
+    <div>Footer</div>
+
+    <!--Load angular-->
+    <script src="//code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="scripts/angular/angular.js"></script>
+    <script src="scripts/angular/angular-route.js"></script>
+
+    <!--Load custom scripts-->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/weather.js"></script>
+    <script src="scripts/dogs.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>
+
+</body>
+</html>

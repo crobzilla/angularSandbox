@@ -1,0 +1,6 @@
+<div data-ng-repeat="product in products | filter: { id: productId }">
+    Product: {{ product.name | uppercase }}<br>
+    Price: {{ product.price | currency }}<br>
+    Age: {{ product.age }}<br>
+    Color: {{ product.color }}<br>
+</div>
